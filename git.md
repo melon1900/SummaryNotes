@@ -1,6 +1,7 @@
 ### 安装
 
 windows
+
 直接使用tortisegit就可好了，图形界面，没啥可说的。
 
 ```
@@ -25,6 +26,7 @@ cd helloworld
 git init
 
 ```
+
 ### 配置
 
 ```
@@ -211,6 +213,31 @@ git stash drop
 git stash pop
 ```
 恢复的同时把stash内容也删除
+
+### 加feature
+首先肯定是要建个分支，在这个分支上开发
+```
+git checkout -b feature_blabla
+
+```
+然后实际开发中，如果该feature的开发周期比较长，而且别的小伙伴也在开发其它的feature，那么我们在开发的同时，要定期merge master分支的修改，以免当我们feature开发完准备合并到master时发现我们已经落后master太多，结果导致冲突太多难以合并。所以要养成定期merge master的习惯
+
+```
+git checkout master
+git pull
+git checkout feature_blabla
+git rebase master
+....解决冲突，如果有的话
+git commit -m "blabla..."
+```
+当feature开完完毕需要merge到master时，也要先进行如上操作，先把冲突在feature分支解决掉，避免在master分支解决冲突，以免将master分支搞乱。解决完冲突提交后就可以到主分支合并feature了
+
+```
+git checkout master
+git merge --no-ff -m "blabla..."
+git push
+```
+--no-ff参数，表示禁用Fast forward，而使用普通模式合并，而且会创建一个新的commit，所以加上-m参数，把修改日志加上。使用普通模式合并的话，合并后的历史有分支，能看出来曾经做过合并。
 
 ### tag
 
